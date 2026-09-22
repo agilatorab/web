@@ -8,10 +8,10 @@ const link =
   "rounded-md px-2 py-2 text-sm sm:px-3 font-medium text-dim transition-colors hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
 
 /**
- * The bar rides along at the top of the window. Its eyes stand in for the
- * hero logo, so they stay out of sight while that logo is on screen and fade
- * in — as the way back to the top — once it has scrolled under the bar.
- * `.header-home` in `styles.css` does the hiding; `header-eyes.ts` flips it.
+ * The bar rides along at the top of the window. Its eyes are the hero logo's
+ * own: when that logo reaches the bar, `header-eyes.ts` picks its eyes up
+ * where they are and flies them into the slot on the left over the next
+ * stretch of scrolling, leaving them there as the way back to the top.
  */
 export function Header(): JSX.Element {
   return (
@@ -22,8 +22,15 @@ export function Header(): JSX.Element {
           class="header-home flex items-center gap-3 text-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
           aria-label={`${SITE.company} — back to top`}
         >
-          <Logo variant="mark" label="" class="logo h-5 w-auto sm:h-6" />
-          <span class="kicker hidden text-ink sm:inline">{SITE.company}</span>
+          <Logo
+            id="header-eyes"
+            variant="mark"
+            label=""
+            class="logo logo-awake header-eyes h-5 w-auto sm:h-6"
+          />
+          <span class="kicker header-word hidden text-ink sm:inline">
+            {SITE.company}
+          </span>
         </a>
         <nav
           aria-label="Primary"

@@ -22,6 +22,8 @@ type LogoProps = {
 /**
  * The Agilator AB logo, inline so it paints with the first byte of CSS and
  * takes its ink colour from `currentColor` — one asset for light and dark.
+ * The eyes are their own group: the header borrows the hero logo's pair on
+ * the way past, and needs to hide the originals while it wears them.
  */
 export function Logo({
   variant = "full",
@@ -43,13 +45,12 @@ export function Logo({
       aria-hidden={label ? undefined : "true"}
       focusable="false"
     >
-      <path
-        fill="currentColor"
-        fill-rule="evenodd"
-        d={mark ? `${EYES} ${IRIS}` : `${EYES} ${IRIS} ${WORD}`}
-      />
-      <path fill="var(--logo-iris, transparent)" d={IRIS} />
-      <path fill="currentColor" d={SLIT} />
+      <g class="logo-eyes">
+        <path fill="currentColor" fill-rule="evenodd" d={`${EYES} ${IRIS}`} />
+        <path fill="var(--logo-iris, transparent)" d={IRIS} />
+        <path fill="currentColor" d={SLIT} />
+      </g>
+      {!mark && <path fill="currentColor" fill-rule="evenodd" d={WORD} />}
     </svg>
   );
 }
