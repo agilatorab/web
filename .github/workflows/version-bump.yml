@@ -1,0 +1,43 @@
+name: version-bump
+
+# A dry run of the release: prints the semver bump the changeset fragments
+# in .changes/unreleased/ imply and the version it would produce, as a job
+# summary — and pushes nothing. The real bump, tag, changelog and GitHub
+# Release are all cut by release.yml in one dispatch (its `bump: auto`
+# default derives the same value), so this workflow exists to answer "what
+# would a release be right now?" without cutting one.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+      - name: Derive the bump from the fragments
+        run: |
+          BUMP=$(node scripts/release/compute-bump.mjs)
+          LATEST_TAG=$(git tag -l 'v*' --sort=-v:refname | head -n1)
+          if [ -n "$LATEST_TAG" ]; then
+            npm version "${LATEST_TAG#v}" --no-git-tag-version --allow-same-version >/dev/null
+          fi
+          NEXT=$(npm version "$BUMP" --no-git-tag-version)
+          git checkout -- package.json package-lock.json
+          {
+            echo "## Next release"
+            echo
+            echo "- Latest tag: \`${LATEST_TAG:-none}\`"
+            echo "- Bump implied by the fragments: **$BUMP**"
+            echo "- Would become: **$NEXT**"
+            echo
+            echo "Dispatch the Release workflow to cut it."
+          } >> "$GITHUB_STEP_SUMMARY"

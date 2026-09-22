@@ -1,0 +1,32 @@
+name: lighthouse
+
+# OSS_SPEC §11.3.10 — Lighthouse over the built site, with the thresholds in
+# .github/lighthouse/lighthouserc.json. Catches what the static check-seo
+# cannot: contrast, tap-target size, Core Web Vitals on a throttled device.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: make build
+        env:
+          VITE_BASE: /
+      - run: npm install --global @lhci/cli@0.15.x
+      - run: lhci autorun --config=./.github/lighthouse/lighthouserc.json
