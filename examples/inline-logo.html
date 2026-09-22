@@ -1,0 +1,40 @@
+<!doctype html>
+<!-- The Agilator AB logo inlined in a page that is not this site: paste the
+     contents of public/logo.svg (or mark.svg) and colour it from CSS. `color`
+     is the ink; `--logo-iris` is the eyes. Unset, the eyes are holes. -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inline logo example</title>
+    <style>
+      body {
+        margin: 0;
+        display: grid;
+        place-items: center;
+        min-height: 100vh;
+        background: #f5f4ef;
+        font-family: system-ui, sans-serif;
+      }
+      .brand {
+        width: min(80vw, 40rem);
+        color: #2b332f;
+        --logo-iris: #2f8a5b;
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #121614;
+        }
+        .brand {
+          color: #e7eae6;
+          --logo-iris: #6cc48f;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Replace this comment with the contents of public/logo.svg, adding
+         class="brand" to the <svg> element. -->
+    <p class="brand">See the comment in the source of this page.</p>
+  </body>
+</html>

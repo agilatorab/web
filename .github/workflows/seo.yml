@@ -1,0 +1,32 @@
+name: seo
+
+# OSS_SPEC §11.3.10 — structural SEO assertions. Builds the site exactly as
+# the production slot is built and runs `check-seo.mjs` over dist/, so a
+# missing canonical, a JSON-LD image drifting from og:image, an empty
+# prerender or a lost robots.txt cannot ship silently.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check-seo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: make build
+        env:
+          VITE_BASE: /
+      - run: make check-seo

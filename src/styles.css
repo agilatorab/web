@@ -1,0 +1,87 @@
+/* SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0 */
+
+/* Site stylesheet: Tailwind v4 plus the handful of tokens the page is built
+   from. Colours are custom properties so the same utilities serve both
+   schemes — the dark block below only swaps the values. */
+
+@import "tailwindcss";
+
+@theme {
+  --font-sans:
+    "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, sans-serif;
+
+  /* Warm paper and the logo's own slate-green ink. */
+  --color-paper: #f5f4ef;
+  --color-card: #fbfaf7;
+  --color-ink: #2b332f;
+  --color-dim: #626b66;
+  --color-line: #d9dbd4;
+  /* The iris: an alligator green, muted at rest and vivid when awake. */
+  --color-accent: #2f8a5b;
+  --color-accent-soft: #cfe6d7;
+  --color-iris-rest: #6d9e82;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-paper: #121614;
+    --color-card: #181d1a;
+    --color-ink: #e7eae6;
+    --color-dim: #9aa39d;
+    --color-line: #262d29;
+    --color-accent: #6cc48f;
+    --color-accent-soft: #1f3a2b;
+    --color-iris-rest: #4d8a66;
+  }
+}
+
+html {
+  color-scheme: light dark;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-feature-settings:
+    "cv11" 1,
+    "ss01" 1;
+  text-rendering: optimizeLegibility;
+}
+
+/* The logo's eyes: a resting iris colour that brightens to the accent when
+   the visitor's pointer reaches it, or when the logo asks for it. */
+.logo {
+  --logo-iris: var(--color-iris-rest);
+  transition: --logo-iris 400ms ease;
+}
+.logo path {
+  transition: fill 400ms ease;
+}
+.logo-awake,
+a:hover > .logo,
+a:focus-visible > .logo {
+  --logo-iris: var(--color-accent);
+}
+
+/* Kicker: the small wide-tracked caps line that echoes the wordmark. */
+.kicker {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-dim);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .logo,
+  .logo path {
+    transition: none;
+  }
+}
