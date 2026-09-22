@@ -69,32 +69,45 @@ a:focus-visible > .logo {
   --logo-iris: var(--color-accent);
 }
 
-/* The header's eyes: the hero logo is the page's masthead while it is on
-   screen, so the bar keeps its own pair hidden until the big one has scrolled
-   underneath it. `src/app/header-eyes.ts` sets `.past-logo` on <html>; the
-   link keeps its box either way, so the nav never shifts. */
+/* The header's eyes are the hero logo's, borrowed mid-scroll.
+   `src/app/header-eyes.ts` sets `.past-logo` on <html> for the length of the
+   flight and drives it with `--eyes-t`, 0 at the pick-up and 1 once the eyes
+   have settled; the transform it writes lives on `.header-eyes` itself. The
+   swap is a hard cut on purpose — at `--eyes-t: 0` the two pairs are the same
+   size in the same place, so there is nothing to fade. No transitions here
+   either: every frame of this is the scroll's to place. */
 .header-home {
-  opacity: 0;
   visibility: hidden;
-  transform: translateY(-0.25rem);
-  transition:
-    opacity 250ms ease,
-    transform 250ms ease,
-    visibility 250ms;
 }
 .past-logo .header-home {
-  opacity: 1;
   visibility: visible;
-  transform: none;
 }
 
-/* The bar draws its own edge only once there is content passing beneath it. */
-.site-header {
-  border-bottom: 1px solid transparent;
-  transition: border-color 250ms ease;
+/* The pair being worn is not the pair being lent. */
+.past-logo #hero-logo .logo-eyes {
+  opacity: 0;
 }
-.past-logo .site-header {
-  border-bottom-color: var(--color-line);
+
+/* The eyes fly from the page to the bar; the transform origin is the slot's
+   own corner, so the values the script writes are simply what is left of the
+   gap. The wordmark waits on the settle, by which point the eyes have long
+   since finished shrinking and cannot reach across it. */
+.header-eyes {
+  transform-origin: 0 0;
+  will-change: transform;
+}
+.header-word {
+  opacity: clamp(0, calc((var(--eyes-t, 0) - 0.85) / 0.15), 1);
+}
+
+/* The bar draws its own edge as the eyes come to rest on it. */
+.site-header {
+  border-bottom: 1px solid
+    color-mix(
+      in srgb,
+      var(--color-line) calc(var(--eyes-t, 0) * 100%),
+      transparent
+    );
 }
 
 /* Kicker: the small wide-tracked caps line that echoes the wordmark. */
@@ -111,9 +124,7 @@ a:focus-visible > .logo {
     scroll-behavior: auto;
   }
   .logo,
-  .logo path,
-  .header-home,
-  .site-header {
+  .logo path {
     transition: none;
   }
 }
