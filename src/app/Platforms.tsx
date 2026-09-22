@@ -6,7 +6,7 @@ import { SITE, type Platform } from "../site.ts";
 /** Plain line icons — a phone, a phone, a monitor — one per storefront. */
 function Icon({ id }: { id: Platform["id"] }): JSX.Element {
   const common = {
-    class: "h-7 w-7 text-accent",
+    class: "h-7 w-7 shrink-0 text-accent",
     viewBox: "0 0 24 24",
     fill: "none",
     stroke: "currentColor",
@@ -56,9 +56,11 @@ export function Platforms(): JSX.Element {
             key={p.id}
             class="rounded-2xl border border-line bg-card p-6 transition-colors hover:border-accent"
           >
-            <Icon id={p.id} />
-            <h3 class="mt-5 text-lg font-semibold">{p.name}</h3>
-            <p class="mt-1 text-sm font-medium text-accent">{p.what}</p>
+            <div class="flex items-center gap-3">
+              <Icon id={p.id} />
+              <h3 class="text-lg font-semibold">{p.name}</h3>
+            </div>
+            <p class="mt-2 text-sm font-medium text-accent">{p.what}</p>
             <p class="mt-3 text-sm leading-relaxed text-dim">{p.note}</p>
           </li>
         ))}

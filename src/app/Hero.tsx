@@ -15,7 +15,7 @@ export function Hero(): JSX.Element {
       id="top"
       class="mx-auto w-full max-w-5xl px-4 pt-12 pb-16 sm:px-6 sm:pt-20 sm:pb-24"
     >
-      <Logo class="logo logo-awake mx-auto w-full max-w-3xl" />
+      <Logo id="hero-logo" class="logo logo-awake mx-auto w-full max-w-3xl" />
       <p class="kicker mt-10 text-center sm:mt-14">
         Independent studio · {SITE.country}
       </p>

@@ -14,6 +14,8 @@ type LogoProps = {
   iris?: string;
   /** Decorative logos (next to a text label) pass an empty string. */
   label?: string;
+  /** Set when something on the page needs to find this particular logo. */
+  id?: string;
   class?: string;
 };
 
@@ -25,6 +27,7 @@ export function Logo({
   variant = "full",
   iris,
   label = "Agilator AB",
+  id,
   class: className,
 }: LogoProps): JSX.Element {
   const mark = variant === "mark";
@@ -32,6 +35,7 @@ export function Logo({
   return (
     <svg
       viewBox={mark ? VIEWBOX_MARK : VIEWBOX_FULL}
+      id={id}
       class={className}
       style={style}
       role={label ? "img" : undefined}
