@@ -4,6 +4,7 @@ import { hydrate, prerender as ssr } from "preact-iso";
 import "@fontsource-variable/inter";
 import "./styles.css";
 import { App } from "./App.tsx";
+import { watchHeroLogo } from "./app/header-eyes.ts";
 
 // In the browser, take over the HTML the build prerendered rather than
 // painting it again: the markup is already on screen before this script
@@ -12,6 +13,7 @@ if (typeof window !== "undefined") {
   const root = document.getElementById("app");
   if (!root) throw new Error("missing #app element");
   hydrate(<App />, root);
+  watchHeroLogo();
 }
 
 // Called by `@preact/preset-vite` at build time (the `prerender` attribute on

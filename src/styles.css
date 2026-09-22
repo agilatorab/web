@@ -41,6 +41,8 @@ html {
   background: var(--color-paper);
   color: var(--color-ink);
   scroll-behavior: smooth;
+  /* Anchors land below the sticky header, not underneath it. */
+  scroll-padding-top: 5rem;
   -webkit-text-size-adjust: 100%;
 }
 
@@ -67,6 +69,34 @@ a:focus-visible > .logo {
   --logo-iris: var(--color-accent);
 }
 
+/* The header's eyes: the hero logo is the page's masthead while it is on
+   screen, so the bar keeps its own pair hidden until the big one has scrolled
+   underneath it. `src/app/header-eyes.ts` sets `.past-logo` on <html>; the
+   link keeps its box either way, so the nav never shifts. */
+.header-home {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-0.25rem);
+  transition:
+    opacity 250ms ease,
+    transform 250ms ease,
+    visibility 250ms;
+}
+.past-logo .header-home {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+/* The bar draws its own edge only once there is content passing beneath it. */
+.site-header {
+  border-bottom: 1px solid transparent;
+  transition: border-color 250ms ease;
+}
+.past-logo .site-header {
+  border-bottom-color: var(--color-line);
+}
+
 /* Kicker: the small wide-tracked caps line that echoes the wordmark. */
 .kicker {
   font-size: 0.75rem;
@@ -81,7 +111,9 @@ a:focus-visible > .logo {
     scroll-behavior: auto;
   }
   .logo,
-  .logo path {
+  .logo path,
+  .header-home,
+  .site-header {
     transition: none;
   }
 }
